@@ -36,8 +36,8 @@ module ClickHouse
       end
 
       transport.get(path) do |conn|
-        conn.params = query.merge(database: database).compact
-        conn.params[:send_progress_in_http_headers] = 1 unless body.empty?
+        conn.params = config.global_params.merge(query).merge(database: database).compact
+        conn.params[:send_progress_in_http_headers] = 1 if config.send_progress_in_http_headers && !body.empty?
         conn.body = body
       end
     end
@@ -75,7 +75,8 @@ module ClickHouse
 
     def compose(path, query = {})
       # without <query.compact> "DB::Exception: Empty query" error will occur
-      "#{path}?#{URI.encode_www_form({ send_progress_in_http_headers: 1 }.merge(query).compact)}"
+      progress = config.send_progress_in_http_headers ? { send_progress_in_http_headers: 1 } : {}
+      "#{path}?#{URI.encode_www_form(progress.merge(query).compact)}"
     end
 
     # @return [Boolean]
