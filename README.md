@@ -67,6 +67,9 @@ ClickHouse.config do |config|
 
   # if you want to add settings to all queries
   config.global_params = { mutations_sync: 1 }
+
+  # set to false to stop asking ClickHouse for progress headers (read-only users can't change settings)
+  config.send_progress_in_http_headers = true
   
   # choose a ruby JSON parser (default one)
   config.json_parser = ClickHouse::Middleware::ParseJson

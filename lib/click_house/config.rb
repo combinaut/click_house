@@ -17,6 +17,7 @@ module ClickHouse
       ssl_verify: false,
       headers: {},
       global_params: {},
+      send_progress_in_http_headers: true,
       json_parser: ClickHouse::Middleware::ParseJson,
       json_serializer: ClickHouse::Serializer::JsonSerializer,
       oj_dump_options: {
@@ -49,6 +50,7 @@ module ClickHouse
     attr_accessor :ssl_verify
     attr_accessor :headers
     attr_accessor :global_params
+    attr_accessor :send_progress_in_http_headers # [Boolean] ask ClickHouse for X-ClickHouse-Progress headers
     attr_accessor :oj_load_options
     attr_accessor :json_load_options
     attr_accessor :json_parser # response middleware
